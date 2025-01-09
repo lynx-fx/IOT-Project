@@ -1,4 +1,3 @@
-//MOTOR1 PINS
 int ena = 5;
 int in1 = 6;
 int in2 = 7;
@@ -21,6 +20,8 @@ void setup() {
   pinMode(rightSensor, INPUT);
   pinMode(powerRight, OUTPUT);
   digitalWrite(powerRight, HIGH);
+
+  serial1.begin(9600);
 }
 
 void loop() {
@@ -38,7 +39,20 @@ void loop() {
       stop();
     }
   } else if (mode == "remote"){
-
+    if (serial1.available() > 0){
+      char data = serial1.read();
+      if (data == 'F'){
+        goForward();
+      } else if (data == 'B'){
+        goBbackward();
+      } else if (data == 'R'){
+        goRight();
+      } else if (data == 'L'){
+        goLeft();
+      } else if (data == 'S'){
+        stop();
+      }
+    }
   }
 }
 
