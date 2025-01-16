@@ -43,7 +43,7 @@ void setup() {
   pinMode(rightSensor, INPUT);
 
   analogWrite(ENA, 255); // Max speed for Motor A
-  analogWrite(ENB, 240); // Max speed for Motor B
+  analogWrite(ENB, 227); // Max speed for Motor B
 
   // Start Wi-Fi in access point mode
   WiFi.softAP(ssid, password);
@@ -195,6 +195,7 @@ void setup() {
   server.on("/toggleMode", HTTP_GET, []() {
     if (mode == "line") {
       mode = "remote";
+      stopCar();
     } else {
       mode = "line";
     }
