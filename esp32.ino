@@ -1,11 +1,9 @@
 #include <WiFi.h>
 #include <WebServer.h>
 
-// Wi-Fi credentials
 const char *ssid = "Bathroom Cam 3";
 const char *password = "12345678";
 
-// GPIO pins for motor driver
 #define ENA 16
 #define ENB 17
 #define IN1 5
@@ -15,7 +13,6 @@ const char *password = "12345678";
 #define leftSensor 34
 #define rightSensor 35
 
-// Web server on port 80
 WebServer server(80);
 
 // Function prototypes
@@ -26,8 +23,7 @@ void turnRight();
 void stopCar();
 void sendCommandToCar(char command);
 
-// Initializing the motor control mode
-String mode = "remote"; // Default mode is line-following
+String mode = "remote";
 
 void setup() {
   Serial.begin(115200);
@@ -42,10 +38,9 @@ void setup() {
   pinMode(leftSensor, INPUT);
   pinMode(rightSensor, INPUT);
 
-  analogWrite(ENA, 255); // Max speed for Motor A
-  analogWrite(ENB, 227); // Max speed for Motor B
+  analogWrite(ENA, 255);
+  analogWrite(ENB, 255);
 
-  // Start Wi-Fi in access point mode
   WiFi.softAP(ssid, password);
   Serial.println("ESP32 Hotspot started!");
   Serial.print("SSID: ");
@@ -55,7 +50,6 @@ void setup() {
   Serial.print("IP Address: ");
   Serial.println(WiFi.softAPIP());
 
-  // Define web server routes
   server.on("/", HTTP_GET, []() {
     server.send(200, "text/html", R"rawliteral(
       <!DOCTYPE html>
@@ -212,12 +206,12 @@ void loop() {
     int leftState = digitalRead(leftSensor);
     int rightState = digitalRead(rightSensor);
 
-    if (leftState == HIGH && rightState == HIGH) {
+    if (leftState == LOW && rightState == LOW) {
       goForward();
-    } else if (leftState == LOW && rightState == HIGH) {
-      turnLeft();
     } else if (leftState == HIGH && rightState == LOW) {
       turnRight();
+    } else if (leftState == LOW && rightState == HIGH) {
+      turnLeft();
     } else {
       stopCar();
     }
