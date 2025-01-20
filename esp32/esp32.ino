@@ -1,15 +1,15 @@
 #include <WiFi.h>
 #include <WebServer.h>
 
-const char *ssid = "Bathroom Cam 3";
-const char *password = "12345678";
+const char *ssid = "ESP32 Car";
+const char *password = "12345678                          ";
 
 #define ENA 16
 #define ENB 17
 #define IN1 5
 #define IN2 18
-#define IN3 19
-#define IN4 21
+#define IN3 21
+#define IN4 19
 #define leftSensor 34
 #define rightSensor 35
 
@@ -21,9 +21,12 @@ void goBackward();
 void turnLeft();
 void turnRight();
 void stopCar();
+void lineforward();
+void lineLeft();
+void lineRight();
 void sendCommandToCar(char command);
 
-String mode = "remote";
+String mode = "line";
 
 void setup() {
   Serial.begin(115200);
@@ -206,12 +209,15 @@ void loop() {
     int leftState = digitalRead(leftSensor);
     int rightState = digitalRead(rightSensor);
 
+    Serial.print(leftState);
+    Serial.println(rightState);
+
     if (leftState == LOW && rightState == LOW) {
-      goForward();
+      lineForward();
     } else if (leftState == HIGH && rightState == LOW) {
-      turnRight();
+      lineLeft();
     } else if (leftState == LOW && rightState == HIGH) {
-      turnLeft();
+      lineRight();
     } else {
       stopCar();
     }
@@ -230,20 +236,17 @@ void sendCommandToCar(char command) {
 }
 
 void goForward() {
+  analogWrite(ENA, 255);
+  analogWrite(ENB, 255);
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, LOW);
   digitalWrite(IN4, HIGH);
 }
 
-void goBackward() {
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, HIGH);
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, LOW);
-}
-
 void turnLeft() {
+  analogWrite(ENA, 255);
+  analogWrite(ENB, 255);
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, HIGH);
@@ -251,6 +254,8 @@ void turnLeft() {
 }
 
 void turnRight() {
+  analogWrite(ENA, 255);
+  analogWrite(ENB, 255);
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, LOW);
@@ -262,4 +267,40 @@ void stopCar() {
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, LOW);
   digitalWrite(IN4, LOW);
+}
+
+void goBackward(){
+  analogWrite(ENA, 255);
+  analogWrite(ENB, 255);
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW); 
+}
+
+void lineForward() {
+  analogWrite(ENA, 150);
+  analogWrite(ENB, 150);
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+}
+
+void lineLeft() {
+  analogWrite(ENA, 230);
+  analogWrite(ENB, 230);
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+}
+
+void lineRight() {
+  analogWrite(ENA, 230);
+  analogWrite(ENB, 230);
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
 }
