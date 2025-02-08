@@ -2,7 +2,7 @@
 #include <WebServer.h>
 
 const char *ssid = "ESP32 Car";
-const char *password = "12345678                          ";
+const char *password = "12345678";
 
 #define ENA 16
 #define ENB 17
@@ -279,8 +279,8 @@ void goBackward(){
 }
 
 void lineForward() {
-  analogWrite(ENA, 150);
-  analogWrite(ENB, 150);
+  analogWrite(ENA, 125);
+  analogWrite(ENB, 125);
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, LOW);
@@ -288,8 +288,8 @@ void lineForward() {
 }
 
 void lineLeft() {
-  analogWrite(ENA, 230);
-  analogWrite(ENB, 230);
+  analogWrite(ENA, 200);
+  analogWrite(ENB, 200);
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, HIGH);
@@ -297,8 +297,8 @@ void lineLeft() {
 }
 
 void lineRight() {
-  analogWrite(ENA, 230);
-  analogWrite(ENB, 230);
+  analogWrite(ENA, 200);
+  analogWrite(ENB, 200);
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, LOW);
