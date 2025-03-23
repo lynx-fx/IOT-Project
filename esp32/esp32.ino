@@ -6,10 +6,12 @@ const char *password = "12345678";
 
 #define ENA 16
 #define ENB 17
-#define IN1 5
+#define IN1 4 
 #define IN2 18
 #define IN3 21
 #define IN4 19
+#define power1 22
+#define power2 23
 #define leftSensor 34
 #define rightSensor 35
 
@@ -26,7 +28,7 @@ void lineLeft();
 void lineRight();
 void sendCommandToCar(char command);
 
-String mode = "line";
+String mode = "remote";
 
 void setup() {
   Serial.begin(115200);
@@ -38,8 +40,14 @@ void setup() {
   pinMode(ENB, OUTPUT);
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
+  pinMode(power1, OUTPUT);
+  pinMode(power2, OUTPUT);
   pinMode(leftSensor, INPUT);
   pinMode(rightSensor, INPUT);
+
+  digitalWrite(power1, HIGH);
+  digitalWrite(power2, HIGH);
+
 
   analogWrite(ENA, 255);
   analogWrite(ENB, 255);
@@ -190,7 +198,7 @@ void setup() {
   });
 
   server.on("/toggleMode", HTTP_GET, []() {
-    if (mode == "line") {
+    if (mode == "line") {zuuuuu
       mode = "remote";
       stopCar();
     } else {
@@ -279,8 +287,8 @@ void goBackward(){
 }
 
 void lineForward() {
-  analogWrite(ENA, 125);
-  analogWrite(ENB, 125);
+  analogWrite(ENA, 70);
+  analogWrite(ENB, 70);
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, LOW);
@@ -288,8 +296,8 @@ void lineForward() {
 }
 
 void lineLeft() {
-  analogWrite(ENA, 200);
-  analogWrite(ENB, 200);
+  analogWrite(ENA, 70);
+  analogWrite(ENB, 70);
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, HIGH);
@@ -297,8 +305,8 @@ void lineLeft() {
 }
 
 void lineRight() {
-  analogWrite(ENA, 200);
-  analogWrite(ENB, 200);
+  analogWrite(ENA, 70);
+  analogWrite(ENB, 70);
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, LOW);
